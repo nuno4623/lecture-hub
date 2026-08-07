@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>말 한마디로 만드는 보고 PPT — 실습 허브</title>
+<link href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+  /* ============================================
+     강의별 수정 포인트 — 여기만 바꾸면 재사용 됩니다
+     ① 아래 CSS 변수 (원하면 스파이크 색만 교체)
+     ② HTML 내 [LINK-1]~[LINK-4] 주석의 href
+     ③ 강의명·날짜·단계 텍스트
+  ============================================ */
+  :root{
+    --paper:#f0f2ec;
+    --card:#ffffff;
+    --ink:#16241f;
+    --muted:#65736c;
+    --line:#d3d9d0;
+    --spike:#d94f16;        /* 강의 브랜드 컬러 — 여기 한 곳만 바꾸면 톤 전체 변경 */
+    --spike-soft:#fbe9df;
+    --dim:#eceee8;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Pretendard Variable',Pretendard,'Noto Sans KR',sans-serif;
+    font-size:20px;
+    line-height:1.75;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:0 24px 90px;}
+  a{color:inherit;}
+  :focus-visible{outline:3px solid var(--spike);outline-offset:3px;border-radius:4px;}
+
+  /* ---------- jump nav ---------- */
+  .jump{
+    position:sticky;top:0;z-index:20;
+    background:var(--paper);
+    display:flex;gap:10px;
+    padding:16px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .jump a{
+    flex:1;text-align:center;text-decoration:none;
+    font-size:17px;font-weight:700;color:var(--ink);
+    background:var(--card);border:1.5px solid var(--line);border-radius:999px;
+    padding:13px 6px;
+    transition:border-color .15s, color .15s;
+  }
+  .jump a:hover{border-color:var(--spike);color:var(--spike);}
+
+  /* ---------- header ---------- */
+  header{padding:46px 0 40px;}
+  .badge{
+    display:inline-flex;align-items:center;gap:9px;
+    font-family:'IBM Plex Mono',monospace;font-size:14px;letter-spacing:.1em;
+    color:var(--muted);margin-bottom:18px;
+  }
+  .badge::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--spike);}
+  h1{
+    font-family:'Hahmlet',serif;font-weight:600;
+    font-size:clamp(31px,6.4vw,44px);line-height:1.34;letter-spacing:-.015em;
+  }
+  h1 small{
+    display:block;font-size:18px;font-weight:500;color:var(--muted);
+    font-family:'Pretendard Variable',Pretendard,sans-serif;
+    margin-top:12px;letter-spacing:0;
+  }
+
+  /* ---------- link rail ---------- */
+  .rail{margin-bottom:56px;scroll-margin-top:84px;}
+  .rail-h{font-size:16px;font-weight:700;letter-spacing:.06em;color:var(--muted);margin-bottom:16px;}
+  .stops{display:flex;flex-direction:column;gap:12px;}
+  .stop{
+    display:flex;align-items:center;gap:20px;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-left:5px solid var(--spike);
+    border-radius:14px;
+    padding:22px 24px;
+    text-decoration:none;
+    transition:border-color .15s, transform .15s, box-shadow .15s;
+  }
+  .stop:hover{
+    border-color:var(--ink);border-left-color:var(--spike);
+    transform:translateY(-1px);
+    box-shadow:0 6px 18px rgba(28,42,38,.08);
+  }
+  .stop .no{
+    font-family:'Hahmlet',serif;font-weight:700;
+    font-size:24px;color:#fff;
+    width:48px;height:48px;flex-shrink:0;
+    background:var(--spike);border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .stop .txt{flex:1;}
+  .stop b{display:block;font-size:22px;font-weight:700;letter-spacing:-.01em;}
+  .stop .sub{display:block;font-size:17px;color:var(--muted);margin-top:2px;}
+  .stop .go{
+    margin-left:auto;flex-shrink:0;
+    font-family:'IBM Plex Mono',monospace;font-size:15px;color:var(--muted);
+    transition:color .15s, transform .15s;
+  }
+  .stop:hover .go{color:var(--spike);transform:translateX(3px);}
+
+  /* 아직 열리지 않은 항목 */
+  .stop.later{background:var(--dim);border:1px dashed #c3cbc0;border-left:5px solid #c3cbc0;}
+  .stop.later:hover{border-color:var(--muted);transform:none;box-shadow:none;}
+  .stop.later .no{background:#c3cbc0;color:#fff;}
+  .stop.later b{color:#54615b;}
+  .stop.later .sub{color:#7d8a83;}
+  .lock{
+    margin-left:auto;flex-shrink:0;
+    font-size:14px;font-weight:700;color:#7d8a83;
+    background:#dfe3dc;padding:5px 12px;border-radius:999px;
+  }
+
+  /* ---------- sections ---------- */
+  section{margin-bottom:56px;scroll-margin-top:84px;}
+  h2{
+    font-family:'Hahmlet',serif;font-weight:600;
+    font-size:27px;letter-spacing:-.01em;
+    padding-bottom:12px;margin-bottom:22px;
+    border-bottom:2px solid var(--ink);
+  }
+  h2 em{
+    font-style:normal;font-family:'IBM Plex Mono',monospace;
+    font-size:12px;color:var(--muted);letter-spacing:.08em;
+    display:inline-block;margin-left:10px;vertical-align:2px;
+  }
+
+  /* ---------- step toggles ---------- */
+  .steps{display:flex;flex-direction:column;gap:10px;}
+  details{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:12px;
+    overflow:hidden;
+  }
+  details[open]{border-color:var(--ink);}
+  summary{
+    list-style:none;cursor:pointer;
+    display:flex;align-items:center;gap:14px;
+    padding:20px 22px;
+    font-weight:700;font-size:20px;
+    user-select:none;
+  }
+  summary::-webkit-details-marker{display:none;}
+  summary .s-no{
+    font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:500;
+    color:var(--spike);letter-spacing:.05em;flex-shrink:0;
+  }
+  summary .chev{margin-left:auto;color:var(--muted);font-size:13px;transition:transform .2s;}
+  details[open] .chev{transform:rotate(180deg);}
+  .step-body{padding:2px 22px 22px;font-size:19px;}
+  .step-body p{margin-bottom:10px;color:var(--muted);}
+  .step-body p:last-child{margin-bottom:0;}
+  .step-body p b{color:var(--ink);}
+  .docbtn{
+    display:inline-block;background:var(--ink);color:#fff;text-decoration:none;
+    font-weight:700;padding:13px 22px;border-radius:10px;font-size:18px;
+  }
+
+  /* ---------- copy block ---------- */
+  .copybox{
+    position:relative;
+    background:var(--ink);color:#e9ede9;
+    border-radius:10px;
+    padding:18px 96px 18px 20px;
+    font-size:18px;line-height:1.7;
+    margin:12px 0 4px;
+    white-space:pre-wrap;word-break:break-all;
+  }
+  .copybox button{
+    position:absolute;top:11px;right:11px;
+    background:var(--spike);color:#fff;
+    border:none;border-radius:8px;
+    font-family:inherit;font-size:16px;font-weight:700;
+    padding:9px 14px;cursor:pointer;
+    transition:filter .15s;
+  }
+  .copybox button:hover{filter:brightness(1.08);}
+  .copybox button.done{background:#3d6b52;}
+
+  /* ---------- help ---------- */
+  .help{display:grid;gap:10px;}
+  .help .h-item{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:20px 22px;font-size:18px;
+  }
+  .h-item b{display:block;font-size:19px;margin-bottom:4px;}
+  .h-item b::before{content:"⚑ ";color:var(--spike);}
+  .h-item span{color:var(--muted);}
+  .hand{
+    margin-top:14px;padding:18px 22px;
+    background:var(--spike-soft);border-radius:12px;
+    font-size:18px;font-weight:500;
+  }
+
+  /* ---------- footer ---------- */
+  footer{
+    border-top:1px solid var(--line);
+    padding-top:22px;
+    display:flex;justify-content:space-between;align-items:baseline;gap:20px;
+    font-size:16px;color:var(--muted);
+  }
+  footer .fm{font-family:'IBM Plex Mono',monospace;font-size:13px;flex-shrink:0;}
+
+  @media (prefers-reduced-motion: reduce){*{transition:none !important;}}
+  @media(max-width:560px){
+    body{font-size:19px;}
+    .wrap{padding:0 18px 70px;}
+    .stop{padding:18px 16px;gap:14px;}
+    .stop .no{width:40px;height:40px;font-size:20px;}
+    .stop b{font-size:20px;}
+    footer{flex-direction:column;gap:8px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="jump">
+    <a href="#sec-links">오늘의 링크</a>
+    <a href="#sec-steps">실습 순서</a>
+    <a href="#sec-help">막혔을 때</a>
+  </nav>
+
+  <header>
+    <div class="badge">AI 활용 실무교육 · 2026. 8. 12</div>
+    <h1>말 한마디로 만드는 보고 PPT
+      <small>「말 한마디로 끝내는 행정업무」 1차시 — 실습 허브</small>
+    </h1>
+  </header>
+
+  <!-- ================= 링크 레일 ================= -->
+  <div class="rail" id="sec-links">
+    <div class="rail-h">오늘의 링크 — 수업 순서대로 놓여 있어요</div>
+    <div class="stops">
+
+      <!-- [LINK-1] 커스텀 GPT 공유링크 -->
+      <a class="stop" href="https://gemini.google.com/gem/19u7ikz4FoOxCeBHl4DSw423MVNvjxAQ_?usp=sharing" target="_blank" rel="noopener">
+        <span class="no">1</span>
+        <span class="txt"><b>보고서 도우미 열기</b><span class="sub">실습 1 · 개요 만들기 — 여기서 시작합니다</span></span>
+        <span class="go">GO →</span>
+      </a>
+
+      <!-- [LINK-2] gamma.app -->
+      <a class="stop" href="https://gamma.app" target="_blank" rel="noopener">
+        <span class="no">2</span>
+        <span class="txt"><b>감마(Gamma) 열기</b><span class="sub">실습 2 · 개요를 붙여넣으면 PPT가 됩니다</span></span>
+        <span class="go">GO →</span>
+      </a>
+
+      <!-- [LINK-3] 제출폼(Apps Script) 링크로 교체 -->
+      <a class="stop" href="#" target="_blank" rel="noopener">
+        <span class="no">3</span>
+        <span class="txt"><b>결과물 제출하기</b><span class="sub">완성한 PPT 링크를 여기에 — 이름은 안 적어도 됩니다</span></span>
+        <span class="go">GO →</span>
+      </a>
+
+      <!-- [LINK-4] 강의 후 자료(슬라이드 PDF 등) 링크로 교체 -->
+      <a class="stop later" href="#" target="_blank" rel="noopener">
+        <span class="no">4</span>
+        <span class="txt"><b>강의 자료실</b><span class="sub">수업이 끝나면 열립니다 — 오늘 슬라이드와 정리 자료</span></span>
+        <span class="lock">잠김</span>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- ================= 실습 순서 ================= -->
+  <section id="sec-steps">
+    <h2>실습 순서<em>STEP BY STEP</em></h2>
+    <div class="steps">
+
+      <details open>
+        <summary><span class="s-no">STEP 1</span>보고서 도우미 접속<span class="chev">▼</span></summary>
+        <div class="step-body">
+          <p>위의 <b>1번 버튼</b>을 누르면 오늘 수업용 AI가 열립니다. 로그인 화면이 나오면 안내에 따라 로그인해 주세요.</p>
+          <p><b>화면 아래 메뉴 버튼</b>이 보이면 준비 완료입니다.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary><span class="s-no">STEP 2</span>샘플 문서 요약해보기<span class="chev">▼</span></summary>
+        <div class="step-body">
+          <p>도우미 채팅창에 <b>⓪</b>을 입력하세요. 그다음 아래 버튼으로 실습 문서를 여세요.</p>
+          <!-- [LINK-DOC] 데이터패킷 웹복사용 페이지 링크로 교체 -->
+          <p><a class="docbtn" href="packet.html" target="_blank" rel="noopener">📄 실습 문서 열기 → 전체 복사</a></p>
+          <p>문서 페이지의 <b>「전체 복사」 버튼</b>을 누르고, 도우미 채팅창에 <b>붙여넣기(Ctrl+V)</b> 하면 끝. 드래그할 필요 없습니다.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary><span class="s-no">STEP 3</span>샘플로 개요 만들기<span class="chev">▼</span></summary>
+        <div class="step-body">
+          <p>메뉴에서 <b>「① 샘플로 개요 만들기」</b>를 누르세요. 준비된 가상 데이터가 자동으로 사용됩니다.</p>
+          <p>개요가 나오면 내용을 읽어보고, 고치고 싶은 부분은 말로 요청하세요. 예를 들어:</p>
+          <div class="copybox" data-copy="3번 항목을 표로 바꿔줘. 그리고 마지막에 향후 계획을 추가해줘.">3번 항목을 표로 바꿔줘. 그리고 마지막에 향후 계획을 추가해줘.<button type="button">복사</button></div>
+        </div>
+      </details>
+
+      <details>
+        <summary><span class="s-no">STEP 4</span>감마용 텍스트로 변환<span class="chev">▼</span></summary>
+        <div class="step-body">
+          <p>개요가 마음에 들면 <b>③</b>을 입력하세요. 나온 결과를 <b>전체 복사</b>합니다.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary><span class="s-no">STEP 5</span>감마에서 PPT 생성<span class="chev">▼</span></summary>
+        <div class="step-body">
+          <p>위의 <b>2번 버튼</b>으로 감마에 접속 → 구글 계정으로 가입(30초) → <b>새로 만들기 → 텍스트 붙여넣기</b>를 선택하고, 복사한 내용을 붙여넣으세요.</p>
+          <p>생성 버튼을 누르면 PPT가 만들어집니다. <b>테마를 바꿔보며</b> 마음에 드는 걸 고르세요.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary><span class="s-no">STEP 6</span>내려받기 · 제출<span class="chev">▼</span></summary>
+        <div class="step-body">
+          <p>오른쪽 위 <b>공유 → 내보내기</b>에서 PowerPoint 파일로 내려받아 내 메일로 보내두세요. 사무실 PC에서 이어서 다듬을 수 있습니다.</p>
+          <p>마지막으로 <b>3번 버튼</b>에서 결과물을 제출하면 오늘 실습 완료!</p>
+        </div>
+      </details>
+
+    </div>
+  </section>
+
+  <!-- ================= 막혔을 때 ================= -->
+  <section id="sec-help">
+    <h2>막혔을 때<em>QUICK FIX</em></h2>
+    <div class="help">
+      <div class="h-item">
+        <b>로그인이 안 돼요</b>
+        <span>비밀번호가 기억나지 않으면 「비밀번호 찾기」보다 <u>구글 계정으로 계속하기</u>가 빠릅니다.</span>
+      </div>
+      <div class="h-item">
+        <b>AI 응답이 멈췄어요 / 오류가 떠요</b>
+        <span>새로고침 한 번 → 그래도 안 되면 화면을 끄지 말고 손을 들어주세요. 예비 접속 경로를 안내해 드립니다.</span>
+      </div>
+      <div class="h-item">
+        <b>복사·붙여넣기가 헷갈려요</b>
+        <span>복사는 <u>Ctrl + C</u>, 붙여넣기는 <u>Ctrl + V</u>. 텍스트를 마우스로 끝까지 긁은 다음 눌러야 합니다.</span>
+      </div>
+    </div>
+    <div class="hand">✋ 그래도 안 되면 그대로 두고 손을 들어주세요 — 멈춘 화면이 가장 좋은 질문입니다.</div>
+  </section>
+
+  <footer>
+    <span>오늘 실습에는 <b>가상 데이터만</b> 사용합니다 · 실제 문서/개인정보 입력 금지</span>
+    <span class="fm">SJ STUDIO</span>
+  </footer>
+
+</div>
+
+<script>
+  // 복사 버튼 — 클립보드 API + 구형 브라우저 폴백
+  document.querySelectorAll('.copybox button').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var text = btn.parentElement.getAttribute('data-copy');
+      function ok(){
+        btn.textContent = '복사됨 ✓';
+        btn.classList.add('done');
+        setTimeout(function(){ btn.textContent='복사'; btn.classList.remove('done'); }, 1800);
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).then(ok);
+      } else {
+        var ta = document.createElement('textarea');
+        ta.value = text; document.body.appendChild(ta);
+        ta.select(); document.execCommand('copy');
+        document.body.removeChild(ta); ok();
+      }
+    });
+  });
+</script>
+</body>
+</html>

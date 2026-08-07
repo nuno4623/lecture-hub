@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>실습 자료 — 추진계획(안)</title>
+<link href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+  :root{
+    --paper:#eff1ec; --card:#f8f9f6; --ink:#1c2a26;
+    --muted:#68766f; --line:#d5dbd3; --spike:#e8541f;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--paper);color:var(--ink);
+    font-family:'Pretendard Variable',Pretendard,'Noto Sans KR',sans-serif;
+    font-size:16px;line-height:1.8;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:720px;margin:0 auto;padding:40px 22px 90px;}
+  .badge{display:inline-flex;align-items:center;gap:8px;
+    font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.1em;
+    color:var(--muted);margin-bottom:14px;}
+  .badge::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--spike);}
+  h1{font-family:'Hahmlet',serif;font-weight:600;font-size:24px;line-height:1.4;margin-bottom:8px;}
+  .sub{font-size:14px;color:var(--muted);margin-bottom:22px;}
+
+  .copybar{
+    position:sticky;top:12px;z-index:5;
+    display:flex;gap:10px;align-items:center;
+    background:var(--ink);border-radius:14px;
+    padding:14px 16px;margin-bottom:22px;
+    box-shadow:0 8px 24px rgba(28,42,38,.18);
+  }
+  .copybar span{color:#e9ede9;font-size:14.5px;flex:1;}
+  .copybar button{
+    background:var(--spike);color:#fff;border:none;border-radius:9px;
+    font-family:inherit;font-size:16px;font-weight:700;
+    padding:12px 22px;cursor:pointer;white-space:nowrap;
+    transition:filter .15s;
+  }
+  .copybar button:hover{filter:brightness(1.08);}
+  .copybar button.done{background:#3d6b52;}
+
+  .doc{
+    background:#fff;border:1px solid var(--line);border-radius:14px;
+    padding:34px 30px;font-size:15.5px;
+  }
+  .doc .note{font-size:12.5px;color:var(--muted);text-align:center;margin-bottom:14px;}
+  .doc .org{text-align:center;color:var(--muted);font-size:14px;}
+  .doc h2{
+    text-align:center;font-size:20px;font-weight:800;
+    padding-bottom:14px;margin-bottom:22px;
+    border-bottom:2px solid var(--ink);
+  }
+  .doc h3{font-size:16.5px;font-weight:800;margin:22px 0 8px;}
+  .doc p{margin-bottom:7px;}
+  .doc table{width:100%;border-collapse:collapse;margin:10px 0 12px;font-size:14px;}
+  .doc th,.doc td{border:1px solid #bbb;padding:7px 9px;}
+  .doc th{background:#f0f0ee;font-weight:700;text-align:center;}
+  .doc td:first-child{text-align:center;}
+  .doc .sig{text-align:center;margin-top:26px;}
+  .doc .sig b{font-size:17px;}
+  footer{margin-top:26px;font-size:13px;color:var(--muted);text-align:center;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="badge">실습 자료 · 미니 실습 ⓪</div>
+  <h1>2026년 하반기 주민 디지털 역량 강화 사업 추진계획(안)</h1>
+  <p class="sub">아래 버튼으로 문서 전체가 복사됩니다 → 보고서 도우미에 <b>⓪ 입력 후 붙여넣기</b></p>
+
+  <div class="copybar">
+    <span>드래그할 필요 없어요 — 버튼 하나면 전체 복사</span>
+    <button id="copyAll" type="button">전체 복사</button>
+  </div>
+
+  <div class="doc" id="docBody">
+    <div class="note">※ 본 문서는 교육 실습용 가상 문서입니다. 기관·인명·수치는 모두 허구입니다.</div>
+    <div class="org">OO시 OO구 OO동 행정복지센터</div>
+    <h2>2026년 하반기 주민 디지털 역량 강화 사업 추진계획(안)</h2>
+
+    <h3>1. 추진 배경</h3>
+    <p>○ 2026년 상반기 「주민 스마트폰 활용 교육」 운영 결과, 목표 인원 100명 대비 128명이 참여(달성률 128%)하고 만족도 4.3점(5점 만점)을 기록하는 등 주민 수요가 확인됨</p>
+    <p>○ 수료자 대상 조사 결과 74%가 재수강을 희망하였으며, 심화 과정 및 무인단말기(키오스크) 교육 신설 요구가 다수 접수됨</p>
+    <p>○ 이에 하반기에는 교육 과정을 확대·다양화하여 주민 디지털 격차 해소를 가속화하고자 함</p>
+
+    <h3>2. 사업 개요</h3>
+    <p>○ 사업명: 2026년 하반기 주민 디지털 역량 강화 사업</p>
+    <p>○ 기간: 2026. 9. ~ 12. (4개월, 과정별 주 1회)</p>
+    <p>○ 장소: OO동 행정복지센터 3층 강당 및 2층 회의실</p>
+    <p>○ 대상: 관내 주민 200명 (과정별 정원 상이)</p>
+    <p>○ 운영 과정: 3개 과정 (기초반, 심화반, 키오스크 특별반)</p>
+
+    <h3>3. 세부 추진 계획</h3>
+    <table>
+      <tr><th>과정</th><th>대상·정원</th><th>주요 내용</th><th>일정</th></tr>
+      <tr><td>기초반</td><td>어르신 80명</td><td>스마트폰 기본 조작, 카메라, 메신저</td><td>9월~12월 매주 화</td></tr>
+      <tr><td>심화반</td><td>일반 주민 60명</td><td>공공앱 활용, 모바일 민원, 금융 안전</td><td>9월~12월 매주 목</td></tr>
+      <tr><td>키오스크 특별반</td><td>어르신 60명</td><td>무인단말기 실습 (음식점·관공서·병원)</td><td>10월~11월 매주 금</td></tr>
+    </table>
+    <p>○ 전 과정은 상반기 교육을 담당한 외부 강사 1인이 연속성 확보 차원에서 전담 운영</p>
+    <p>○ 키오스크 특별반은 실습 장비(교육용 키오스크 2대)를 임차하여 운영</p>
+
+    <h3>4. 소요 예산</h3>
+    <table>
+      <tr><th>항목</th><th>산출 내역</th><th>금액</th></tr>
+      <tr><td>강사비</td><td>3개 과정 × 4개월</td><td>360만원</td></tr>
+      <tr><td>장비 임차료</td><td>교육용 키오스크 2대 × 2개월</td><td>160만원</td></tr>
+      <tr><td>재료비</td><td>교재 인쇄 및 실습 소모품</td><td>70만원</td></tr>
+      <tr><td>홍보비</td><td>현수막 및 안내물</td><td>30만원</td></tr>
+    </table>
+    <p>○ 총 소요 예산: 620만원 (상반기 350만원 대비 증액)</p>
+    <p>○ 재원: 주민자치 프로그램 운영비</p>
+
+    <h3>5. 기대 효과</h3>
+    <p>○ 어르신 등 디지털 취약계층의 일상 속 디지털 기기 활용 능력 향상</p>
+    <p>○ 무인단말기 이용 애로 해소를 통한 생활 편의 증진</p>
+    <p>○ 행정복지센터 프로그램 참여 확대 및 지역 공동체 활성화</p>
+
+    <h3>6. 협조 사항</h3>
+    <p>○ 홍보: 동 게시판 및 반상회보 게재 (세부 홍보 계획은 추후 수립)</p>
+    <p>○ 수강 신청: 방문 및 전화 접수 (담당: 행정민원팀)</p>
+
+    <div class="sig">
+      <p>2026. 7. 20.</p>
+      <b>OO동 행정복지센터장</b>
+    </div>
+  </div>
+
+  <footer>복사가 안 되면 문서를 처음부터 끝까지 드래그 → Ctrl+C</footer>
+</div>
+
+<script>
+  document.getElementById('copyAll').addEventListener('click', function(){
+    var btn = this;
+    var text = document.getElementById('docBody').innerText;
+    function ok(){
+      btn.textContent = '복사됨 ✓';
+      btn.classList.add('done');
+      setTimeout(function(){ btn.textContent='전체 복사'; btn.classList.remove('done'); }, 2200);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(ok);
+    } else {
+      var ta = document.createElement('textarea');
+      ta.value = text; document.body.appendChild(ta);
+      ta.select(); document.execCommand('copy');
+      document.body.removeChild(ta); ok();
+    }
+  });
+</script>
+</body>
+</html>
