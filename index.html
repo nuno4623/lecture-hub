@@ -256,18 +256,18 @@
         <span class="go">GO →</span>
       </a>
 
-      <!-- [LINK-3] 제출폼(Apps Script) 링크로 교체 -->
+      <!-- [LINK-3] 제출폼(Apps Script) -->
       <a class="stop" href="https://script.google.com/macros/s/AKfycbwHslq4EIH1KWYR8x0fAzt08c653fMKshwzE9yOFHmHMZ_oeyuRZtTeApW1FsDekmlGSA/exec" target="_blank" rel="noopener">
         <span class="no">3</span>
         <span class="txt"><b>결과물 제출하기</b><span class="sub">완성한 PPT 링크를 여기에 — 이름은 안 적어도 됩니다</span></span>
         <span class="go">GO →</span>
       </a>
 
-      <!-- [LINK-4] 강의 후 자료(슬라이드 PDF 등) 링크로 교체 -->
-      <a class="stop later" href="https://script.google.com/macros/s/AKfycbwHslq4EIH1KWYR8x0fAzt08c653fMKshwzE9yOFHmHMZ_oeyuRZtTeApW1FsDekmlGSA/exec?view=expo" target="_blank" rel="noopener">
+      <!-- [LINK-4] 강의 자료실 → 복습 가이드. UNLOCK_AT 시각부터 자동으로 열림 -->
+      <a class="stop later" id="vault" href="./guide.html" target="_blank" rel="noopener">
         <span class="no">4</span>
-        <span class="txt"><b>작품 전시장 · 자료실</b><span class="sub">수업이 끝나면 열립니다 — 오늘의 작품과 강의 자료</span></span>
-        <span class="lock">잠김</span>
+        <span class="txt"><b>강의 자료실</b><span class="sub">수업이 끝나면 열립니다 — 복습 가이드 · 프롬프트 모음</span></span>
+        <span class="lock" id="vault-lock">잠김</span>
       </a>
 
     </div>
@@ -377,6 +377,21 @@
 </div>
 
 <script>
+  // 자료실 잠금 해제 — 이 시각(수업 종료)부터 4번 버튼이 열립니다. 필요시 시각만 수정.
+  (function(){
+    var UNLOCK_AT = new Date('2026-08-12T17:00:00+09:00');
+    var vault = document.getElementById('vault');
+    var lock = document.getElementById('vault-lock');
+    if (!vault) return;
+    if (new Date() < UNLOCK_AT) {
+      vault.addEventListener('click', function(e){ e.preventDefault(); });
+      vault.style.cursor = 'default';
+    } else {
+      if (lock) lock.textContent = 'GO →';
+      vault.classList.remove('later');
+    }
+  })();
+
   // 복사 버튼 — 클립보드 API + 구형 브라우저 폴백
   document.querySelectorAll('.copybox button').forEach(function(btn){
     btn.addEventListener('click', function(){

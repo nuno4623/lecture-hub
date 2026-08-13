@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>복습 가이드 — 말 한마디로 만드는 보고 PPT</title>
+<link href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+  :root{
+    --paper:#eff1ec; --card:#f8f9f6; --ink:#1c2a26;
+    --muted:#68766f; --line:#d5dbd3; --spike:#e8541f; --spikesoft:#fdeee6;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--paper);color:var(--ink);
+    font-family:'Pretendard Variable',Pretendard,'Malgun Gothic','맑은 고딕',sans-serif;
+    font-size:19px;line-height:1.8;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:760px;margin:0 auto;padding:44px 22px 90px;}
+  :focus-visible{outline:2.5px solid var(--spike);outline-offset:3px;border-radius:4px;}
+
+  .jump{position:sticky;top:0;z-index:20;background:var(--paper);
+    display:flex;gap:8px;padding:12px 0;margin-bottom:8px;
+    border-bottom:1px solid var(--line);}
+  .jump a{flex:1;text-align:center;text-decoration:none;
+    font-size:15px;font-weight:700;color:var(--ink);
+    background:var(--card);border:1.5px solid var(--line);border-radius:999px;
+    padding:10px 4px;transition:border-color .15s,color .15s;}
+  .jump a:hover{border-color:var(--spike);color:var(--spike);}
+
+  .badge{display:inline-flex;align-items:center;gap:8px;
+    font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.1em;
+    color:var(--muted);margin:26px 0 14px;}
+  .badge::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--spike);}
+  h1{font-family:'Hahmlet',serif;font-weight:600;
+    font-size:clamp(28px,6vw,36px);line-height:1.35;letter-spacing:-.01em;}
+  h1 small{display:block;font-size:16px;font-weight:500;color:var(--muted);
+    font-family:'Pretendard Variable',Pretendard,sans-serif;margin-top:8px;}
+
+  section{margin-top:52px;scroll-margin-top:80px;}
+  h2{font-family:'Hahmlet',serif;font-weight:600;font-size:24px;
+    padding-bottom:12px;margin-bottom:20px;border-bottom:1.5px solid var(--ink);}
+  h2 em{font-style:normal;font-family:'IBM Plex Mono',monospace;
+    font-size:12px;color:var(--muted);letter-spacing:.08em;margin-left:10px;vertical-align:2px;}
+  h3{font-size:18px;font-weight:800;margin:28px 0 12px;color:var(--spike);}
+
+  /* 5단계 */
+  .step{display:flex;gap:16px;align-items:flex-start;
+    background:var(--card);border:1px solid var(--line);border-radius:13px;
+    padding:17px 20px;margin-bottom:10px;}
+  .step .n{width:40px;height:40px;flex-shrink:0;border-radius:50%;
+    background:var(--spike);color:#fff;font-weight:800;font-size:18px;
+    display:flex;align-items:center;justify-content:center;}
+  .step b{display:block;font-size:18px;}
+  .step span{display:block;font-size:16px;color:var(--muted);margin-top:2px;}
+
+  /* 프롬프트 */
+  .pnote{font-size:16px;color:var(--muted);margin-bottom:6px;}
+  .pnote b{color:var(--ink);}
+  .prompt{position:relative;background:var(--ink);color:#e9ede9;
+    border-radius:12px;padding:16px 18px;padding-right:84px;
+    font-size:16.5px;line-height:1.75;margin:10px 0 6px;}
+  .prompt .use{display:block;font-size:13px;color:#a8b5ad;margin-bottom:4px;}
+  .prompt button{position:absolute;top:12px;right:12px;
+    background:var(--spike);color:#fff;border:none;border-radius:8px;
+    font-family:inherit;font-size:14px;font-weight:700;
+    padding:8px 13px;cursor:pointer;transition:filter .15s;}
+  .prompt button:hover{filter:brightness(1.08);}
+  .prompt button.done{background:#3d6b52;}
+  .tip{font-size:15px;color:var(--muted);margin:2px 0 18px;padding-left:4px;}
+
+  /* 막힐 때 / 보안 */
+  .fix{background:var(--card);border:1px solid var(--line);border-radius:13px;
+    padding:17px 20px;margin-bottom:10px;font-size:17px;}
+  .fix b{display:block;font-size:17.5px;margin-bottom:3px;}
+  .fix b::before{content:"⚑ ";color:var(--spike);}
+  .fix span{color:var(--muted);}
+  .rule{background:var(--spikesoft);border-radius:13px;
+    padding:17px 20px;margin-bottom:10px;font-size:17px;}
+  .rule b{color:var(--spike);}
+
+  /* 도구 */
+  .tools a{display:flex;justify-content:space-between;align-items:baseline;
+    background:var(--card);border:1.5px solid var(--line);border-radius:13px;
+    padding:16px 20px;margin-bottom:10px;text-decoration:none;color:var(--ink);
+    transition:border-color .15s;}
+  .tools a:hover{border-color:var(--spike);}
+  .tools b{font-size:18px;}
+  .tools span{font-size:15px;color:var(--muted);}
+  /* 기간한정 배너 */
+  .flash{display:flex;gap:14px;align-items:flex-start;
+    background:var(--ink);color:#e9ede9;border-radius:14px;
+    padding:18px 20px;margin:26px 0 4px;}
+  .flash .tag{flex-shrink:0;font-family:'IBM Plex Mono',monospace;
+    font-size:12px;font-weight:700;letter-spacing:.08em;
+    background:var(--spike);color:#fff;border-radius:999px;padding:5px 11px;margin-top:2px;}
+  .flash b{color:#fff;}
+  .flash .d{font-size:16.5px;line-height:1.75;}
+  .flash .d small{display:block;font-size:13.5px;color:#a8b5ad;margin-top:6px;}
+  .flash a{color:var(--spike);font-weight:700;text-decoration:none;}
+  .flash a:hover{text-decoration:underline;}
+
+  footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--ink);
+    display:flex;justify-content:space-between;
+    font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--muted);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="jump">
+    <a href="#sec-redo">다시 해보기</a>
+    <a href="#sec-prompt">프롬프트</a>
+    <a href="#sec-fix">막힐 때</a>
+    <a href="#sec-rule">보안·도구</a>
+  </nav>
+
+  <div class="badge">복습 가이드 · 혼자서도 됩니다</div>
+  <h1>말 한마디로 만드는 보고 PPT
+    <small>사무실에서 혼자 다시 해보는 법 + 바로 쓰는 프롬프트 모음</small>
+  </h1>
+
+  <div class="flash" id="manus-flash">
+    <span class="tag">8/25 까지</span>
+    <span class="d"><b>Manus(마누스) 한시 무료</b> — 대답만 하는 게 아니라 일을 대신 실행하는 AI입니다. 자료 조사 → 분석 → 보고서·웹페이지까지 혼자 완주해요. 8월 25일까지 크레딧 차감 없이 무료.
+    <a href="https://manus.im" target="_blank" rel="noopener">manus.im</a>에 구글 계정으로 로그인해서, 수업 때 만든 개요를 주고 "심화 조사해줘"라고 시켜보세요.
+    <small>한시 이벤트라 날짜·조건은 바뀔 수 있습니다 — 접속해서 공지를 확인하세요. 여기서도 실명·내부 문서 금지 원칙은 그대로.</small></span>
+  </div>
+
+  <!-- ============ 1. 다시 해보기 ============ -->
+  <section id="sec-redo">
+    <h2>혼자 다시 해보기<em>5 STEPS</em></h2>
+    <div class="step"><div class="n">1</div><div><b>보고서 도우미 접속</b><span>아래 도구 목록의 「보고서 도우미」 클릭 → 구글 로그인. 메뉴 ⓪~⑤가 뜨면 준비 끝.</span></div></div>
+    <div class="step"><div class="n">2</div><div><b>읽히기 — ⓪ 입력</b><span>요약하고 싶은 문서를 복사해서 붙여넣으면 요약 + 검토 질문이 나옵니다.</span></div></div>
+    <div class="step"><div class="n">3</div><div><b>만들기 — ② 입력</b><span>내 업무 내용으로 보고서 개요를 만듭니다. 마음에 안 들면 말로 고치세요.</span></div></div>
+    <div class="step"><div class="n">4</div><div><b>PPT로 — ③ 입력 → 감마</b><span>변환된 텍스트를 전체 복사 → gamma.app → 새로 만들기 → 텍스트 붙여넣기 → 생성.</span></div></div>
+    <div class="step"><div class="n">5</div><div><b>가져가기</b><span>공유 → 내보내기. 제출·공유는 PDF, 이어서 편집할 거면 PPTX.</span></div></div>
+  </section>
+
+  <!-- ============ 2. 프롬프트 ============ -->
+  <section id="sec-prompt">
+    <h2>바로 쓰는 프롬프트<em>COPY &amp; PASTE</em></h2>
+    <p class="pnote">복사 버튼 → 도우미(또는 일반 제미나이)에 붙여넣기 → <b>(괄호)</b> 자리에 내 내용만 채우면 됩니다.</p>
+
+    <h3>📥 받은 문서 처리할 때 — 문서 먼저 붙여넣고</h3>
+
+    <div class="prompt" data-copy="위 문서를 3줄로 요약하고, 결재 전에 확인해야 할 질문 3가지를 뽑아줘."><span class="use">올라온 문서 빨리 파악</span>위 문서를 3줄로 요약하고, 결재 전에 확인해야 할 질문 3가지를 뽑아줘.<button type="button">복사</button></div>
+
+    <div class="prompt" data-copy="위 계획서의 약한 부분을 상급자 관점에서 지적해줘. 예산, 일정, 리스크 순서로."><span class="use">내 계획서 셀프 검토 — 결재 올리기 전에</span>위 계획서의 약한 부분을 상급자 관점에서 지적해줘. 예산, 일정, 리스크 순서로.<button type="button">복사</button></div>
+
+    <div class="prompt" data-copy="위 회의 내용에서 ①결정된 것 ②해야 할 일(담당자별) ③다음 회의까지 확인할 것으로 나눠서 정리해줘."><span class="use">회의록 → 할 일 목록</span>위 회의 내용에서 ①결정된 것 ②해야 할 일(담당자별) ③다음 회의까지 확인할 것으로 나눠서 정리해줘.<button type="button">복사</button></div>
+
+    <div class="prompt" data-copy="위 내용을 처음 보는 주민도 이해할 수 있게 쉬운 말로 다시 써줘. 전문용어는 일상어로 바꿔줘."><span class="use">어려운 지침·공고문 번역</span>위 내용을 처음 보는 주민도 이해할 수 있게 쉬운 말로 다시 써줘. 전문용어는 일상어로 바꿔줘.<button type="button">복사</button></div>
+
+    <h3>📋 양식대로 쓰기 — 실무 사용 빈도 1위</h3>
+    <p class="pnote">작년 문서·기존 양식에 새 내용만 갈아 끼우는 법. <b>양식과 내용을 나눠서</b> 주는 게 핵심입니다.</p>
+
+    <div class="prompt" data-copy="아래 [양식]의 구조, 항목, 어투를 그대로 유지하면서 [새 내용]으로 다시 작성해줘. 양식의 틀은 절대 바꾸지 말고 내용만 교체해줘.
+
+[양식]
+(작년 문서나 기존 양식 붙여넣기)
+
+[새 내용]
+(이번에 들어갈 내용과 수치 붙여넣기)"><span class="use">기존 양식에 새 내용 채우기 — 기본형</span>아래 [양식]의 구조, 항목, 어투를 그대로 유지하면서 [새 내용]으로 다시 작성해줘. 양식의 틀은 절대 바꾸지 말고 내용만 교체해줘. [양식] (기존 문서) [새 내용] (이번 내용)<button type="button">복사</button></div>
+
+    <div class="prompt" data-copy="아래 문서의 구조는 그대로 유지하고, 내용을 (이번 사업명) 기준으로 바꿔줘. 아직 확정 안 된 수치는 00으로 비워둬.
+
+(기존 문서 붙여넣기)"><span class="use">새 내용이 아직 없을 때 — 뼈대만 갈이</span>아래 문서의 구조는 그대로 유지하고, 내용을 (이번 사업명) 기준으로 바꿔줘. 아직 확정 안 된 수치는 00으로 비워둬. (기존 문서 붙여넣기)<button type="button">복사</button></div>
+
+    <div class="prompt" data-copy="아래 작년 문서를 올해 버전으로 업데이트해줘. 바뀐 것만 알려줄게: (변경사항 나열). 나머지는 그대로 두고, 바꾼 부분에는 표시해줘.
+
+(작년 문서 붙여넣기)"><span class="use">연차 문서 업데이트 — 작년 것 올해 버전으로</span>아래 작년 문서를 올해 버전으로 업데이트해줘. 바뀐 것만 알려줄게: (변경사항 나열). 나머지는 그대로 두고, 바꾼 부분에는 표시해줘. (작년 문서 붙여넣기)<button type="button">복사</button></div>
+    <p class="tip">💡 "어투 유지"를 꼭 넣으세요 — 공문서는 개조식 말투(~함, ~임)까지가 양식입니다. "틀은 절대 바꾸지 말고"는 AI가 멋대로 항목을 합치는 걸 막아줍니다.</p>
+
+    <h3>✍️ 문서 만들 때</h3>
+
+    <div class="prompt" data-copy="아래 내용으로 결과보고 개요를 만들어줘. 구조는 사업개요 → 추진실적(표) → 만족도 → 예산집행(표) → 성과 및 개선점 → 향후계획.
+
+(내용 붙여넣기)"><span class="use">결과보고 — 오늘 배운 그것</span>아래 내용으로 결과보고 개요를 만들어줘. 구조는 사업개요 → 추진실적(표) → 예산집행(표) → 성과 및 개선점 → 향후계획. (내용 붙여넣기)<button type="button">복사</button></div>
+
+    <div class="prompt" data-copy="(행사명) 계획안 초안을 표 중심으로 만들어줘. 항목: 행사명 / 목적 / 일시 / 장소 / 대상 / 주요 내용 / 소요예산 항목 / 추진 일정. 수치는 00으로 비워두고 내가 채울게."><span class="use">행사·교육 계획안 뼈대</span>(행사명) 계획안 초안을 표 중심으로 만들어줘. 항목: 행사명 / 목적 / 일시 / 장소 / 대상 / 주요 내용 / 소요예산 항목 / 추진 일정. 수치는 00으로 비워두고 내가 채울게.<button type="button">복사</button></div>
+
+    <div class="prompt" data-copy="(행사명) 개회식에서 할 기관장 인사말씀을 2분 분량으로 써줘. 참석자는 주민과 유관기관 관계자. 계절 인사로 시작하고, 따뜻하되 격식 있게."><span class="use">인사말씀·축사 — 매번 새로 쓰기 힘든 그것</span>(행사명) 개회식에서 할 기관장 인사말씀을 2분 분량으로 써줘. 참석자는 주민과 유관기관 관계자. 계절 인사로 시작하고, 따뜻하되 격식 있게.<button type="button">복사</button></div>
+
+    <div class="prompt" data-copy="아래 민원에 대한 답변 초안을 써줘. 공감 표현으로 시작하고, 해드릴 수 있는 것과 어려운 것을 구분해서, 정중하지만 명확하게.
+
+(민원 내용 붙여넣기)"><span class="use">민원 답변 — 감정 소모 줄이기</span>아래 민원에 대한 답변 초안을 써줘. 공감 표현으로 시작하고, 해드릴 수 있는 것과 어려운 것을 구분해서, 정중하지만 명확하게. (민원 내용 붙여넣기)<button type="button">복사</button></div>
+
+    <div class="prompt" data-copy="아래 사업 내용을 주민 안내문으로 바꿔줘. 어르신도 이해할 쉬운 문장으로, 누가 / 언제 / 어디서 / 어떻게 순서로 정리하고 마지막에 문의처.
+
+(내용 붙여넣기)"><span class="use">주민 안내문</span>아래 사업 내용을 주민 안내문으로 바꿔줘. 어르신도 이해할 쉬운 문장으로, 누가 / 언제 / 어디서 / 어떻게 순서로. (내용 붙여넣기)<button type="button">복사</button></div>
+
+    <h3>🔧 고칠 때 — 나온 결과가 아쉬우면</h3>
+
+    <div class="prompt" data-copy="이 부분을 표로 바꿔줘.">이 부분을 표로 바꿔줘.<button type="button">복사</button></div>
+    <div class="prompt" data-copy="전체를 절반 길이로 줄여줘. 핵심만 남기고.">전체를 절반 길이로 줄여줘. 핵심만 남기고.<button type="button">복사</button></div>
+    <div class="prompt" data-copy="더 격식 있는 공문서 어투로 바꿔줘.">더 격식 있는 공문서 어투로 바꿔줘. <b style="color:#a8b5ad;font-weight:400">(반대: "더 부드럽고 친근하게")</b><button type="button">복사</button></div>
+    <div class="prompt" data-copy="향후 계획을 3개 항목으로 더 구체적으로 써줘.">향후 계획을 3개 항목으로 더 구체적으로 써줘.<button type="button">복사</button></div>
+    <div class="prompt" data-copy="제목 후보를 5개 뽑아줘. 격식 있는 것부터 부드러운 것까지.">제목 후보를 5개 뽑아줘. 격식 있는 것부터 부드러운 것까지.<button type="button">복사</button></div>
+
+    <h3>🎁 알아두면 좋은 마법 문장</h3>
+
+    <div class="prompt" data-copy="위 개요를 감마(Gamma)에 붙여넣을 형태로 바꿔줘. 슬라이드 1장은 제목 1줄과 내용 3~5줄, 수치는 '항목: 수치' 목록으로."><span class="use">아무 AI에서나 감마용 변환 (도우미 없이도)</span>위 개요를 감마(Gamma)에 붙여넣을 형태로 바꿔줘. 슬라이드 1장은 제목 1줄과 내용 3~5줄, 수치는 '항목: 수치' 목록으로.<button type="button">복사</button></div>
+
+    <div class="prompt" data-copy="지금까지 내용을 한글 문서에 붙여넣을 표로 바꿔줘."><span class="use">한글로 가져가기</span>지금까지 내용을 한글 문서에 붙여넣을 표로 바꿔줘.<button type="button">복사</button></div>
+
+    <div class="prompt" data-copy="내가 뭘 알려주면 되는지 먼저 물어봐줘. 질문은 한 번에 2개까지만."><span class="use">뭐라고 시켜야 할지 모를 때 — 최강의 한 수</span>내가 뭘 알려주면 되는지 먼저 물어봐줘. 질문은 한 번에 2개까지만.<button type="button">복사</button></div>
+    <p class="tip">💡 공통 요령: 원하는 게 있으면 <b>구조를 불러주세요</b>(항목 순서, 표로, 몇 개로). 구조를 주면 결과가 확 좋아집니다.</p>
+  </section>
+
+  <!-- ============ 3. 막힐 때 ============ -->
+  <section id="sec-fix">
+    <h2>막힐 때 Top 5<em>QUICK FIX</em></h2>
+    <div class="fix"><b>로그인이 안 돼요</b><span>「비밀번호 찾기」보다 <u>Google로 계속하기</u>가 빠릅니다. 폰에 로그인된 계정 그대로 쓰세요.</span></div>
+    <div class="fix"><b>긴 문서를 넣으니 잘려요</b><span>장별로 나눠 붙여넣으면서 "앞 내용에 이어서"라고 말하세요. A4 2장까지는 한 번에 됩니다.</span></div>
+    <div class="fix"><b>감마 크레딧이 아까워요</b><span>전체 재생성(40점) 말고 — 고칠 장만 선택 → 「AI로 편집」(5~10점). 테마 변경은 0점, 마음껏.</span></div>
+    <div class="fix"><b>PPTX를 여니 글자가 이상해요</b><span>고장 아닙니다. 폰트만 맑은 고딕으로 바꾸면 끝. 제출·공유용은 처음부터 PDF로.</span></div>
+    <div class="fix"><b>결과가 마음에 안 들어요</b><span>다시 시키면 됩니다 — 말로. "더 간결하게", "표로", "이 순서로". AI는 지치지 않습니다.</span></div>
+  </section>
+
+  <!-- ============ 4. 보안 · 도구 ============ -->
+  <section id="sec-rule">
+    <h2>잊지 말 것<em>SAFETY &amp; TOOLS</em></h2>
+    <div class="rule"><b>AI는 초안 담당, 책임은 우리 담당.</b> 실명·연락처·주민번호는 넣지 않습니다. 내부 문서는 수치를 바꿔 넣습니다. 최종 확인은 반드시 내 눈으로.</div>
+
+    <div class="tools" style="margin-top:22px">
+      <a href="https://gemini.google.com/gem/19u7ikz4FoOxCeBHl4DSw423MVNvjxAQ_?usp=sharing" target="_blank" rel="noopener"><b>보고서 도우미</b><span>오늘의 그 AI — 계속 쓰세요 (무료)</span></a>
+      <a href="https://gamma.app" target="_blank" rel="noopener"><b>감마 Gamma</b><span>글 → PPT (무료 400크레딧)</span></a>
+      <a href="https://www.canva.com" target="_blank" rel="noopener"><b>캔바 Canva</b><span>포스터·카드뉴스 (무료)</span></a>
+      <a href="https://notebooklm.google.com" target="_blank" rel="noopener"><b>NotebookLM</b><span>자료 넣어두고 물어보는 서재 (무료)</span></a>
+      <a href="https://manus.im" target="_blank" rel="noopener"><b>마누스 Manus</b><span>일을 대신 실행하는 AI — 8/25까지 무료</span></a>
+      <a href="https://nuno4623.github.io/lecture-hub/" target="_blank" rel="noopener"><b>강의 허브</b><span>오늘 쓴 모든 링크가 여기에</span></a>
+    </div>
+  </section>
+
+  <footer>
+    <span>말 한마디로 끝내는 행정업무 · 1차시</span>
+    <span>NUNO STUDIO</span>
+  </footer>
+</div>
+
+<script>
+  // 마누스 무료 기간 종료 후 배너 자동 숨김
+  if (new Date() >= new Date('2026-08-26T00:00:00+09:00')) {
+    var mf = document.getElementById('manus-flash');
+    if (mf) mf.style.display = 'none';
+  }
+
+  document.querySelectorAll('.prompt').forEach(function(box){
+    var btn = box.querySelector('button');
+    btn.addEventListener('click', function(){
+      var text = box.getAttribute('data-copy');
+      function ok(){
+        btn.textContent = '복사됨 ✓'; btn.classList.add('done');
+        setTimeout(function(){ btn.textContent='복사'; btn.classList.remove('done'); }, 1800);
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).then(ok);
+      } else {
+        var ta = document.createElement('textarea');
+        ta.value = text; document.body.appendChild(ta);
+        ta.select(); document.execCommand('copy');
+        document.body.removeChild(ta); ok();
+      }
+    });
+  });
+</script>
+</body>
+</html>
